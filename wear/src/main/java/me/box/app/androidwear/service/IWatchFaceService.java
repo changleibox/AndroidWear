@@ -117,8 +117,8 @@ public class IWatchFaceService extends CanvasWatchFaceService {
         private float mCenterX;
         private float mCenterY;
         private float mSecondHandLength;
-        private float sMinuteHandLength;
-        private float sHourHandLength;
+        private float mMinuteHandLength;
+        private float mHourHandLength;
         /* Colors for all hands (hour, minute, seconds, ticks) based on photo loaded. */
         private int mWatchHandColor;
         private int mWatchHandHighlightColor;
@@ -314,8 +314,8 @@ public class IWatchFaceService extends CanvasWatchFaceService {
              * Calculate lengths of different hands based on watch screen size.
              */
             mSecondHandLength = (float) (mCenterX * 0.875);
-            sMinuteHandLength = (float) (mCenterX * 0.75);
-            sHourHandLength = (float) (mCenterX * 0.5);
+            mMinuteHandLength = (float) (mCenterX * 0.75);
+            mHourHandLength = (float) (mCenterX * 0.5);
 
 
             /* Scale loaded background image (more efficient) if surface dimensions change. */
@@ -475,7 +475,7 @@ public class IWatchFaceService extends CanvasWatchFaceService {
                     mCenterX,
                     mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
                     mCenterX,
-                    mCenterY - sHourHandLength,
+                    mCenterY - mHourHandLength,
                     mHourPaint);
 
             canvas.rotate(minutesRotation - hoursRotation, mCenterX, mCenterY);
@@ -483,7 +483,7 @@ public class IWatchFaceService extends CanvasWatchFaceService {
                     mCenterX,
                     mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
                     mCenterX,
-                    mCenterY - sMinuteHandLength,
+                    mCenterY - mMinuteHandLength,
                     mMinutePaint);
 
             /*
