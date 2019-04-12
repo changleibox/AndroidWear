@@ -40,7 +40,39 @@
 
         <service
             android:name=".service.IWatchFaceService"
-            android:label="@string/my_analog_name"
+            android:label="@string/default_analog_name"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face"/>
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="@drawable/preview_analog"/>
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@drawable/preview_analog"/>
+
+            <!--此处开始-->
+            <!--配置mobile端-->
+            <meta-data
+                android:name="com.google.android.wearable.watchface.companionConfigurationAction"
+                android:value="com.infinitytech.faraday.watchface.CONFIG_DIGITAL"/>
+            <!--配置wear端-->
+            <meta-data
+                android:name="com.google.android.wearable.watchface.wearableConfigurationAction"
+                android:value="com.infinitytech.faraday.watchface.CONFIG_DIGITAL"/>
+            <!--此处结束-->
+
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService"/>
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.SolidColorWatchFaceService"
+            android:label="@string/solid_color_analog_name"
             android:permission="android.permission.BIND_WALLPAPER">
             <meta-data
                 android:name="android.service.wallpaper"
