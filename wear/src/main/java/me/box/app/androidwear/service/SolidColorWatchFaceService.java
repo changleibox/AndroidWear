@@ -23,6 +23,7 @@ import android.support.wearable.watchface.WatchFaceStyle;
 import android.view.SurfaceHolder;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -433,8 +434,8 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
              * cases where you want to allow users to select their own photos, this dynamically
              * creates them on top of the photo.
              */
-            drawTick(canvas, mCenterX);
-            drawTick(canvas, mCenterX / 2 + 16);
+            drawTick(canvas, mCenterX, false);
+            drawTick(canvas, mCenterX / 2 + 16, true);
 
             /*
              * These calculations reflect the rotation in degrees per unit of time, e.g.,
@@ -490,7 +491,7 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
                     mCenterX,
                     mCenterY,
                     CENTER_GAP_AND_CIRCLE_RADIUS,
-                    mSmallTickAndCirclePaint);
+                    mLargeTickAndCirclePaint);
 
             /* Restore the canvas' original orientation. */
             canvas.restore();
@@ -501,15 +502,16 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
          * cases where you want to allow users to select their own photos, this dynamically
          * creates them on top of the photo.
          */
-        private void drawTick(Canvas canvas, float outerTickRadius) {
-            Paint paint;
-            float innerTickRadius;
+        private void drawTick(Canvas canvas, float outerTickRadius, boolean is24Hour) {
+            final DecimalFormat format = new DecimalFormat("00");
             for (int tickIndex = 0; tickIndex < 60; tickIndex++) {
+                Paint paint;
+                float innerTickRadius;
                 if (tickIndex % 5 == 0) {
-                    paint = mLargeTickAndCirclePaint;
+                    paint = new Paint(mLargeTickAndCirclePaint);
                     innerTickRadius = outerTickRadius - 10;
                 } else {
-                    paint = mSmallTickAndCirclePaint;
+                    paint = new Paint(mSmallTickAndCirclePaint);
                     innerTickRadius = outerTickRadius - 6;
                 }
                 float tickRot = (float) (tickIndex * Math.PI * 2 / 60);
@@ -518,6 +520,27 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
                 float outerX = (float) Math.sin(tickRot) * outerTickRadius;
                 float outerY = (float) -Math.cos(tickRot) * outerTickRadius;
                 canvas.drawLine(mCenterX + innerX, mCenterY + innerY, mCenterX + outerX, mCenterY + outerY, paint);
+
+                if (tickIndex % 5 != 0) {
+                    continue;
+                }
+                float innerTickRadiusText = outerTickRadius - 30;
+                float innerXText = (float) Math.sin(tickRot) * innerTickRadiusText;
+                float innerYText = (float) -Math.cos(tickRot) * innerTickRadiusText;
+                paint.setAntiAlias(true);
+                paint.setStyle(Paint.Style.FILL);
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setColor(Color.RED);
+                int time = tickIndex / 5;
+                if (is24Hour) {
+                    time = time != 0 ? time + 12 : time;
+                    paint.setTextSize(11);
+                } else {
+                    time = time == 0 ? 12 : time;
+                    paint.setTextSize(22);
+                }
+                final float offset = paint.getTextSize() / 5 * 2;
+                canvas.drawText(format.format(time), mCenterX + innerXText, mCenterY + offset + innerYText, paint);
             }
         }
 
