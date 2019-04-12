@@ -441,10 +441,10 @@ public class IWatchFaceService extends CanvasWatchFaceService {
             final float seconds = (mCalendar.get(Calendar.SECOND) + mCalendar.get(Calendar.MILLISECOND) / 1000f);
             final float secondsRotation = seconds * 6f;
 
-            final float minute = mCalendar.get(Calendar.MINUTE);
+            final float minute = mCalendar.get(Calendar.MINUTE) + seconds / 60f;
             final float minutesRotation = minute * 6f;
 
-            final float hour = mCalendar.get(Calendar.HOUR);
+            final float hour = mCalendar.get(Calendar.HOUR) + minute / 60f;
             final float hourHandOffset = minute / 2f;
             final float hoursRotation = (hour * 30) + hourHandOffset;
 
