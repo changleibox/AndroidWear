@@ -433,41 +433,8 @@ public class IWatchFaceService extends CanvasWatchFaceService {
              * cases where you want to allow users to select their own photos, this dynamically
              * creates them on top of the photo.
              */
-            Paint paint;
-            float largeInnerTickRadius;
-            float largeOuterTickRadius = mCenterX;
-            for (int tickIndex = 0; tickIndex < 60; tickIndex++) {
-                if (tickIndex % 5 == 0) {
-                    paint = mLargeTickAndCirclePaint;
-                    largeInnerTickRadius = largeOuterTickRadius - 10;
-                } else {
-                    paint = mSmallTickAndCirclePaint;
-                    largeInnerTickRadius = largeOuterTickRadius - 6;
-                }
-                float tickRot = (float) (tickIndex * Math.PI * 2 / 60);
-                float innerX = (float) Math.sin(tickRot) * largeInnerTickRadius;
-                float innerY = (float) -Math.cos(tickRot) * largeInnerTickRadius;
-                float outerX = (float) Math.sin(tickRot) * largeOuterTickRadius;
-                float outerY = (float) -Math.cos(tickRot) * largeOuterTickRadius;
-                canvas.drawLine(mCenterX + innerX, mCenterY + innerY, mCenterX + outerX, mCenterY + outerY, paint);
-            }
-            float smallInnerTickRadius;
-            float smallOuterTickRadius = mCenterX / 2 + 16;
-            for (int tickIndex = 0; tickIndex < 60; tickIndex++) {
-                if (tickIndex % 5 == 0) {
-                    paint = mLargeTickAndCirclePaint;
-                    smallInnerTickRadius = smallOuterTickRadius - 10;
-                } else {
-                    paint = mSmallTickAndCirclePaint;
-                    smallInnerTickRadius = smallOuterTickRadius - 6;
-                }
-                float tickRot = (float) (tickIndex * Math.PI * 2 / 60);
-                float innerX = (float) Math.sin(tickRot) * smallInnerTickRadius;
-                float innerY = (float) -Math.cos(tickRot) * smallInnerTickRadius;
-                float outerX = (float) Math.sin(tickRot) * smallOuterTickRadius;
-                float outerY = (float) -Math.cos(tickRot) * smallOuterTickRadius;
-                canvas.drawLine(mCenterX + innerX, mCenterY + innerY, mCenterX + outerX, mCenterY + outerY, paint);
-            }
+            drawTick(canvas, mCenterX);
+            drawTick(canvas, mCenterX / 2 + 16);
 
             /*
              * These calculations reflect the rotation in degrees per unit of time, e.g.,
@@ -527,6 +494,31 @@ public class IWatchFaceService extends CanvasWatchFaceService {
 
             /* Restore the canvas' original orientation. */
             canvas.restore();
+        }
+
+        /**
+         * Draw ticks. Usually you will want to bake this directly into the photo, but in
+         * cases where you want to allow users to select their own photos, this dynamically
+         * creates them on top of the photo.
+         */
+        private void drawTick(Canvas canvas, float outerTickRadius) {
+            Paint paint;
+            float innerTickRadius;
+            for (int tickIndex = 0; tickIndex < 60; tickIndex++) {
+                if (tickIndex % 5 == 0) {
+                    paint = mLargeTickAndCirclePaint;
+                    innerTickRadius = outerTickRadius - 10;
+                } else {
+                    paint = mSmallTickAndCirclePaint;
+                    innerTickRadius = outerTickRadius - 6;
+                }
+                float tickRot = (float) (tickIndex * Math.PI * 2 / 60);
+                float innerX = (float) Math.sin(tickRot) * innerTickRadius;
+                float innerY = (float) -Math.cos(tickRot) * innerTickRadius;
+                float outerX = (float) Math.sin(tickRot) * outerTickRadius;
+                float outerY = (float) -Math.cos(tickRot) * outerTickRadius;
+                canvas.drawLine(mCenterX + innerX, mCenterY + innerY, mCenterX + outerX, mCenterY + outerY, paint);
+            }
         }
 
         @Override
