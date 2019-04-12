@@ -83,9 +83,9 @@ public class IWatchFaceService extends CanvasWatchFaceService {
 
     @SuppressWarnings({"SpellCheckingInspection", "SameParameterValue", "unused"})
     private class Engine extends CanvasWatchFaceService.Engine {
-        private static final float HOUR_STROKE_WIDTH = 5f;
-        private static final float MINUTE_STROKE_WIDTH = 2f;
-        private static final float SECOND_STROKE_WIDTH = 2f;
+        private static final float HOUR_STROKE_WIDTH = 6f;
+        private static final float MINUTE_STROKE_WIDTH = 3f;
+        private static final float SECOND_STROKE_WIDTH = 1f;
         private static final float SMALL_TICK_STROKE_WIDTH = 1f;
         private static final float LARGE_TICK_STROKE_WIDTH = 3f;
 
