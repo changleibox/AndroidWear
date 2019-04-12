@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PrivateResource">
+    <string name="app_name">安卓表</string>
+    <string name="message">您触摸了表盘</string>
+    <string name="my_analog_name">安卓表</string>
+    <string name="label_select_theme">选择主题</string>
+    <string name="label_classic_black">经典黑</string>
+    <string name="label_wangxingren">汪星人</string>
+</resources>
