@@ -450,7 +450,7 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
             final float hour = mCalendar.get(Calendar.HOUR_OF_DAY) + minute / 60f;
             final float hoursRotation = (hour % 12) * 30f;
 
-            final float multiple = hour > 12 ? 2 : 1;
+            final float multiple = hour > 12 ? 5f / 3f : 1;
 
             /*
              * Save the canvas state before we can begin to rotate it.
@@ -487,11 +487,14 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
                         mSecondPaint);
 
             }
+            final Paint paint = new Paint(mLargeTickAndCirclePaint);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.WHITE);
             canvas.drawCircle(
                     mCenterX,
                     mCenterY,
                     CENTER_GAP_AND_CIRCLE_RADIUS,
-                    mLargeTickAndCirclePaint);
+                    paint);
 
             /* Restore the canvas' original orientation. */
             canvas.restore();
@@ -507,18 +510,21 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
             for (int tickIndex = 0; tickIndex < 60; tickIndex++) {
                 Paint paint;
                 float innerTickRadius;
+                float tmpOuterTickRadius;
                 if (tickIndex % 5 == 0) {
                     paint = new Paint(mLargeTickAndCirclePaint);
-                    innerTickRadius = outerTickRadius - 10;
+                    tmpOuterTickRadius = outerTickRadius + 2;
+                    innerTickRadius = tmpOuterTickRadius - 10;
                 } else {
                     paint = new Paint(mSmallTickAndCirclePaint);
-                    innerTickRadius = outerTickRadius - 6;
+                    tmpOuterTickRadius = outerTickRadius;
+                    innerTickRadius = tmpOuterTickRadius - 6;
                 }
                 float tickRot = (float) (tickIndex * Math.PI * 2 / 60);
                 float innerX = (float) Math.sin(tickRot) * innerTickRadius;
                 float innerY = (float) -Math.cos(tickRot) * innerTickRadius;
-                float outerX = (float) Math.sin(tickRot) * outerTickRadius;
-                float outerY = (float) -Math.cos(tickRot) * outerTickRadius;
+                float outerX = (float) Math.sin(tickRot) * tmpOuterTickRadius;
+                float outerY = (float) -Math.cos(tickRot) * tmpOuterTickRadius;
                 canvas.drawLine(mCenterX + innerX, mCenterY + innerY, mCenterX + outerX, mCenterY + outerY, paint);
 
                 if (tickIndex % 5 != 0) {
@@ -530,7 +536,7 @@ public class SolidColorWatchFaceService extends CanvasWatchFaceService {
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.FILL);
                 paint.setTextAlign(Paint.Align.CENTER);
-                paint.setColor(Color.RED);
+                paint.setColor(Color.WHITE);
                 int time = tickIndex / 5;
                 if (is24Hour) {
                     time = time != 0 ? time + 12 : time;
