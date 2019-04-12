@@ -158,7 +158,7 @@ public class IWatchFaceService extends CanvasWatchFaceService {
             Palette.from(mBackgroundBitmap).generate(palette -> {
                 if (palette != null) {
                     mWatchHandHighlightColor = palette.getVibrantColor(Color.RED);
-                    mWatchHandColor = palette.getLightVibrantColor(Color.WHITE);
+                    mWatchHandColor = palette.getLightVibrantColor(Color.GREEN);
                     mWatchHandShadowColor = palette.getDarkMutedColor(Color.BLACK);
                     updateWatchHandStyle();
                 }
