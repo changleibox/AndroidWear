@@ -438,15 +438,14 @@ public class IWatchFaceService extends CanvasWatchFaceService {
              * These calculations reflect the rotation in degrees per unit of time, e.g.,
              * 360 / 60 = 6 and 360 / 12 = 30.
              */
-            final float seconds = (mCalendar.get(Calendar.SECOND) + 1 + mCalendar.get(Calendar.MILLISECOND) / 1000f);
+            final float seconds = mCalendar.get(Calendar.SECOND) + mCalendar.get(Calendar.MILLISECOND) / 1000f + 1;
             final float secondsRotation = seconds * 6f;
 
             final float minute = mCalendar.get(Calendar.MINUTE) + seconds / 60f;
             final float minutesRotation = minute * 6f;
 
             final float hour = mCalendar.get(Calendar.HOUR) + minute / 60f;
-            final float hourHandOffset = minute / 2f;
-            final float hoursRotation = (hour * 30) + hourHandOffset;
+            final float hoursRotation = hour * 30f;
 
             /*
              * Save the canvas state before we can begin to rotate it.
