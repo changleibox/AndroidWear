@@ -462,8 +462,10 @@ public class IWatchFaceService extends CanvasWatchFaceService {
             final float minute = mCalendar.get(Calendar.MINUTE) + seconds / 60f;
             final float minutesRotation = minute * 6f;
 
-            final float hour = mCalendar.get(Calendar.HOUR) + minute / 60f;
-            final float hoursRotation = hour * 30f;
+            final float hour = mCalendar.get(Calendar.HOUR_OF_DAY) + minute / 60f;
+            final float hoursRotation = (hour % 12) * 30f;
+
+            final float multiple = hour > 12 ? 2 : 1;
 
             /*
              * Save the canvas state before we can begin to rotate it.
@@ -475,7 +477,7 @@ public class IWatchFaceService extends CanvasWatchFaceService {
                     mCenterX,
                     mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
                     mCenterX,
-                    mCenterY - mHourHandLength,
+                    mCenterY - mHourHandLength / multiple,
                     mHourPaint);
 
             canvas.rotate(minutesRotation - hoursRotation, mCenterX, mCenterY);
@@ -483,7 +485,7 @@ public class IWatchFaceService extends CanvasWatchFaceService {
                     mCenterX,
                     mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
                     mCenterX,
-                    mCenterY - mMinuteHandLength,
+                    mCenterY - mMinuteHandLength / multiple,
                     mMinutePaint);
 
             /*
@@ -496,7 +498,7 @@ public class IWatchFaceService extends CanvasWatchFaceService {
                         mCenterX,
                         mCenterY - CENTER_GAP_AND_CIRCLE_RADIUS,
                         mCenterX,
-                        mCenterY - mSecondHandLength,
+                        mCenterY - mSecondHandLength / multiple,
                         mSecondPaint);
 
             }
